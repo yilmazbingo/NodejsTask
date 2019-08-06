@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>my app</h1>
+    <div>
+      <p class="text">ben</p>
+      <input type="text" class="description" />
+      <button class="description">desc</button>
+    </div>
+    <input class="ilk" type="text" />
+    <button class="ilk">change colo</button>
+    <ul>
+      <li title="yilmaz" id="green" style="color:green">green</li>
+      <li id="blue" style="color:blue">blue</li>
+      <li id="yellow" style="color:yellow">yellow</li>
+      <li id="purple" style="color:purple">purple</li>
+    </ul>
+    <button id="remove">remove</button>
+    <button id="hide">hide</button>
+    <script type="text/javascript">
+      const $button = document.querySelector("button.description");
+      const $input = document.querySelector("input.description");
+      const $p = document.querySelector("p.text");
+      $button.addEventListener("click", () => {
+        // e.preventDefault();
+        // $p.textContent = $input.value;
+        const x = document.createElement("li");
+        x.textContent = $input.value;
+        $p.appendChild(x);
+      });
+    </script>
+    <script type="text/javascript">
+      const $green = document.getElementById("green");
+      const $blue = document.getElementById("blue");
+      const $yellow = document.getElementById("yellow");
+      const $purple = document.getElementById("purple");
+      const $buttonToggle = document.getElementById("hide");
+      const $ul = document.querySelector("ul");
+      const $remove = document.getElementById("remove");
+
+      $remove.addEventListener("click", () => {
+        const li = document.querySelector("li:last-child");
+        $ul.removeChild(li);
+      });
+
+      $buttonToggle.addEventListener("click", () => {
+        if ($ul.style.display == "none") {
+          $buttonToggle.textContent = "hide";
+          $ul.style.display = "block";
+        } else {
+          $buttonToggle.textContent = "show";
+          $ul.style.display = "none";
+        }
+      });
+      $ul.addEventListener("click", () => {
+        console.log("event bubbling");
+      });
+      // $green.addEventListener("click", () => {
+      //   document.querySelector("body").style.backgroundColor = "green";
+      // });
+      // $blue.addEventListener("click", () => {
+      //   document.querySelector("body").style.backgroundColor = "blue";
+      // });
+      $yellow.addEventListener("click", () => {
+        document.querySelector("body").style.backgroundColor = "yellow";
+      });
+      $purple.addEventListener("mouseover", () => {
+        document.querySelector("body").style.backgroundColor = "purple";
+      });
+    </script>
+    <script type="text/javascript">
+      document.querySelector("button.ilk").addEventListener("click", e => {
+        console.log(e);
+        console.log("yil");
+        document.querySelector("input").value = "yilmaz";
+        document.querySelector(
+          "body"
+        ).style.backgroundColor = document.querySelector("input.ilk").value;
+      });
+    </script>
+  </body>
+</html>
