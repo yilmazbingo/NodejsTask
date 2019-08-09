@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema(
 // userSchema.set("timestamps", true);
 userSchema.methods.generateJwtToken = function() {
   const token = jwt.sign(
-    { _id: this._id.toString() },
+    { _id: this._id.toString(), isAdmin: this.isAdmin },
     process.env.JWTPRIVATEKEY
   );
   // this.tokens[0] = { token: token };
