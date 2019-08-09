@@ -14,9 +14,6 @@ const upload = multer({
     if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
       return cb(new Error("please upload png,jpeg or jpg"));
     }
-    // if (this.limits.fileSize > 1000000) {
-    //   return cb(new Error("size is larger than 3mb"));
-    // }
     cb(undefined, true);
   }
 });
@@ -126,25 +123,9 @@ router.post(
   auth,
   upload.single("avatar"),
   async (req, res) => {
-    req.user.avatar = req.file.buffer;
-    await req.user.save();
-    // console.log(req.user);
-    // console.log("ercannnn");
-    res.send();
-  },
-  (err, req, res) => {
-    res.status(400).send("error happned");
-  }
-);
-
-router.post(
-  "/users/me/avatar",
-  auth,
-  upload.single("avatar"),
-  async (req, res) => {
-    const buffer = await sharp(req.file.buffer)
+    const buffer = await sharp(req.file.buffer) //this is output from sharp
       .resize({ width: 250, height: 250 })
-      .png()
+      .png() // convert all the files to png
       .toBuffer();
     req.user.avatar = buffer;
     await req.user.save();

@@ -1,6 +1,5 @@
 const app = require("./app.js");
 if (!process.env.JWTPRIVATEKEY) {
-  console.log("no wo");
   process.exit(1);
 }
 const port = process.env.PORT;
