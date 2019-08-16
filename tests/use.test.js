@@ -4,6 +4,7 @@ const User = require("../src/models/user");
 const { userId, user, setupDatabase } = require("./fixtures/db");
 
 beforeEach(setupDatabase);
+
 const userOne = {
   name: "yilmaz",
   email: "hhheer@exampl.com",

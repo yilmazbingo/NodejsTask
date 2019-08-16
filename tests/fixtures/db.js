@@ -27,6 +27,7 @@ const task = {
   conpleted: false,
   owner: userId
 };
+
 const taskOne = {
   _id: new mongoose.Types.ObjectId(),
   description: "newer task",
@@ -43,6 +44,7 @@ const task2 = {
 
 const setupDatabase = async () => {
   await User.deleteMany();
+  await Task.deleteMany();
   await new User(user).save();
   await new User(userOne).save();
   await new Task(task).save();
@@ -52,6 +54,11 @@ const setupDatabase = async () => {
 
 module.exports = {
   userId,
+  userOne,
+  userOneId,
   user,
-  setupDatabase
+  setupDatabase,
+  task,
+  taskOne,
+  task2
 };
