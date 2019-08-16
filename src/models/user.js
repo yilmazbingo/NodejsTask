@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
       validate(value) {
         if (value.toLowerCase().includes("password")) {
-          throw new Error("Passport cannto include password");
+          throw new Error("Passport cannot include password");
         }
       }
     },
@@ -54,8 +54,6 @@ userSchema.methods.generateJwtToken = function() {
     { _id: this._id.toString(), isAdmin: this.isAdmin },
     process.env.JWTPRIVATEKEY
   );
-  // this.tokens[0] = { token: token };
-
   return token;
 };
 

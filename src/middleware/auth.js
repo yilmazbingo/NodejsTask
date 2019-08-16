@@ -8,12 +8,11 @@ const auth = async (req, res, next) => {
       .header("authorization")
       .replace("Bearer", "")
       .trim();
-    console.log(token);
     if (!token) {
       return res.status(400).send("Access Denied! No token is provided");
     }
     //validate the token
-    const decoded = jwt.verify(token, prccess.env.JWTPRIVATEKEY);
+    const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY);
 
     const user = await User.findOne({
       _id: decoded._id,

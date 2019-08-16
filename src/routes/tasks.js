@@ -4,26 +4,25 @@ const Task = require("../models/task.js");
 const auth = require("../middleware/auth");
 
 router.post("/tasks", auth, async (req, res) => {
-  // const task = new Task({
-  //   description: req.body.description,
-  //   completed: req.body.completed
-  // });
+  //owner should not be specified via the request. it gets from auth middleware
   const task = new Task({ ...req.body, owner: req.user._id });
   try {
     await task.save();
-    res.status(200).send(task);
+    res.status(201).send(task);
   } catch (e) {
-    res.status(500).send(e.message);
+    res.status(500).send(e);
   }
 });
 
 router.get("/tasks", auth, async (req, res) => {
   const match = {};
-
+  const sort = {};
   if (req.query.completed) {
     match.completed = req.query.completed === "true";
-    const x = await Task.find(match);
-    // console.log(x);
+  }
+  if (req.query.sortBy) {
+    const parts = req.query.sortBy.split("=");
+    sort[parts[0]] = parts[1] === "desc" ? -1 : 1;
   }
   try {
     await req.user
@@ -32,7 +31,8 @@ router.get("/tasks", auth, async (req, res) => {
         match,
         options: {
           limit: parseInt(req.query.limit),
-          skip: parseInt(req.query.skip)
+          skip: parseInt(req.query.skip),
+          sort
         }
       })
       .execPopulate();

@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const User = require("../models/user");
 const express = require("express");
 const router = new express.Router();
@@ -29,10 +28,10 @@ router.post("/users/login", async (req, res) => {
   }
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) {
-    res.status(401).send("error");
+    res.status(401).send("Invalied email or password");
   }
   const token = await user.generateJwtToken();
-  user.tokens = user.tokens.concat({ token: token });
+  user.tokens = user.tokens.concat({ token });
   await user.save();
   res.send(token);
 });
