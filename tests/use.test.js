@@ -5,18 +5,43 @@ const { userId, user, setupDatabase } = require("./fixtures/db");
 
 beforeEach(setupDatabase);
 
-const userOne = {
-  name: "yilmaz",
-  email: "hhheer@exampl.com",
-  password: "123ssssE@e"
-};
-
-test("it should post user", async () => {
-  await request(app)
+test("Should signup a new user", async () => {
+  const response = await request(app)
     .post("/users")
-    .send(userOne)
+    .send({
+      name: "Andrew",
+      email: "andrew@example.com",
+      password: "MyPass777!"
+    })
     .expect(201);
+
+  // Assert that the database was changed correctly
+  const user = await User.findById(response.body.user._id);
+  expect(user).not.toBeNull();
+
+  // Assertions about the response
+  expect(response.body).toMatchObject({
+    user: {
+      name: "Andrew",
+      email: "andrew@example.com"
+    },
+    token: user.tokens[0].token
+  });
+  expect(user.password).not.toBe("MyPass777!");
 });
+
+// test("it should post user", async () => {
+//   const response = await request(app)
+//     .post("/users")
+//     .send({
+//       name: "Andrew",
+//       email: "andrew@example.com",
+//       password: "MyPass777!"
+//     })
+//     .expect(201);
+//   const user = await User.findById(response.body.user._id);
+//   expect(user).not.toBeNull();
+// });
 
 test("Should get the profile for the user", async () => {
   await request(app)
@@ -25,12 +50,24 @@ test("Should get the profile for the user", async () => {
     .send()
     .expect(200);
 });
-test("Should log in existing user", async () => {
-  await request(app)
-    .post("users/login")
-    .set("Authorization", `Bearer ${user.tokens[0].token}`)
-    .send({ email: user.email, password: user.password })
+
+// test("Should log in existing user", async () => {
+//   await request(app)
+//     .post("/users/login")
+//     .set("Authorization", `Bearer ${user.tokens[0].token}`)
+//     .send({ email: user.email, password: user.password })
+//     .expect(200);
+// });
+test("Should login existing user", async () => {
+  const response = await request(app)
+    .post("/users/login")
+    .send({
+      email: user.email,
+      password: user.password
+    })
     .expect(200);
+  const user = await User.findById(userOneId);
+  expect(response.body.token).toBe(user.tokens[1].token);
 });
 
 test("Should upload avatar", async () => {
